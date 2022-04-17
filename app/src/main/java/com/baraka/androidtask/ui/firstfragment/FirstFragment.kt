@@ -150,8 +150,6 @@ class FirstFragment : BaseFragment<FirstFragmentBinding, FirstViewModel>() {
         recycler_vertical_news.layoutManager = newsLinearLayoutManager
         recycler_vertical_news.adapter = newsAdapter
 
-
-
     }
 
     private fun autoScrollAnother() {
