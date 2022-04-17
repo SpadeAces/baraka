@@ -1,6 +1,5 @@
 package com.baraka.androidtask.ui.firstfragment.adapter
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -8,12 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.baraka.androidtask.R
 import com.baraka.androidtask.data.models.newsfeed.Article
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
+import com.baraka.androidtask.utils.formatTo
+import com.baraka.androidtask.utils.toDate
 import com.squareup.picasso.Picasso
-import javax.sql.DataSource
 
 
 class NewsAdapter(
@@ -51,11 +47,13 @@ class NewsAdapter(
         private var ivNewsBanner: ImageView? = null
         private var tvNewsTitle: TextView? = null
         private var tvNewsDescription: TextView? = null
+        private var tvNewsDate : TextView? = null
 
         init {
             ivNewsBanner = itemView.findViewById(R.id.iv_news_icon)
             tvNewsTitle = itemView.findViewById(R.id.tv_news_title)
             tvNewsDescription = itemView.findViewById(R.id.tv_news_description)
+            tvNewsDate = itemView.findViewById(R.id.tvDateOfNews)
 
         }
 
@@ -70,18 +68,25 @@ class NewsAdapter(
 
             }
 
-            article.title.let {
+            article.title?.let {
                 if (it.isNotEmpty())
                     tvNewsTitle?.text = it
                 else
                     tvNewsTitle?.text = ""
             }
 
-            article.description.let {
+            article.description?.let {
                 if (it.isNotEmpty())
                     tvNewsDescription?.text = it
                 else
                     tvNewsDescription?.text = ""
+            }
+
+            article.publishedAt?.let {
+                if (it.isNotEmpty())
+                    tvNewsDate?.text = it.toDate().formatTo("dd MMM yyyy")
+                else
+                    tvNewsDate?.text = ""
             }
 
         }

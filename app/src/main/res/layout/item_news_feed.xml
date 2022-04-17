@@ -28,13 +28,23 @@
         android:layout_marginEnd="@dimen/_8sdp"
         android:layout_marginBottom="@dimen/_16sdp"
         android:fontFamily="@font/din_regular"
-        android:maxLines="3"
-        android:text="i am going to do this and that"
         android:textSize="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/iv_news_icon"
         app:layout_constraintStart_toStartOf="@+id/tv_news_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_news_title" />
+
+    <TextView
+        android:id="@+id/tvDateOfNews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:fontFamily="@font/din_regular"
+        android:textColor="@color/colorPriceChangeUp"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_news_description"
+        app:layout_constraintTop_toBottomOf="@+id/tv_news_description" />
 
     <ImageView
         android:background="@drawable/price_change_up_bg"

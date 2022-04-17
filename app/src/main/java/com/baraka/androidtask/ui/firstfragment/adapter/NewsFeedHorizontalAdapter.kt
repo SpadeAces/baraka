@@ -54,7 +54,7 @@ class NewsFeedHorizontalAdapter(
         }
 
         fun bind(article: Article) {
-            article.urlToImage.let {
+            article.urlToImage?.let {
                 Picasso
                     .get()
                     .load(it)
@@ -63,14 +63,14 @@ class NewsFeedHorizontalAdapter(
 
             }
 
-            article.title.let {
+            article.title?.let {
                 if (it.isNotEmpty())
                     tvNewsTitle?.text = it
                 else
                     tvNewsTitle?.text = ""
             }
 
-            article.description.let {
+            article.description?.let {
                 if (it.isNotEmpty())
                     tvNewsDescription?.text = it
                 else
