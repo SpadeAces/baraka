@@ -3,6 +3,7 @@ package com.baraka.androidtask.ui.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
+import androidx.core.content.ContextCompat
 import com.baraka.androidtask.BR
 import com.baraka.androidtask.R
 import com.baraka.androidtask.baseclasses.BaseActivity
@@ -29,6 +30,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     private fun initialising() {
+        window.statusBarColor = ContextCompat.getColor(this, R.color.colorWhite)
         progress_bar = findViewById(R.id.progress_bar)
     }
 

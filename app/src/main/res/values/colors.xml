@@ -5,7 +5,9 @@
     <color name="colorAccent">#03DAC5</color>
 
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhiteGradient">#F2F3F2</color>
     <color name="colorBlack">#000000</color>
     <color name="colorPriceChangeUp">#0DDD00</color>
     <color name="colorPriceChangeDown">#AAAAAA</color>
+    <color name="colorImageBg">#262626</color>
 </resources>

@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 
 //@Entity(tableName = "stocks")
 data class StocksResponseItem(
-    var StockItem: List<String>
+    var StockItem: List<Stocks>
 //    var value: String,
 )

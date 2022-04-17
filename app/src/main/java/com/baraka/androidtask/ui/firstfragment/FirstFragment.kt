@@ -13,10 +13,13 @@ import com.baraka.androidtask.BR
 import com.baraka.androidtask.R
 import com.baraka.androidtask.baseclasses.BaseFragment
 import com.baraka.androidtask.data.local.datastore.DataStoreProvider
+import com.baraka.androidtask.data.models.newsfeed.Article
 import com.baraka.androidtask.data.models.stocktickers.StocksResponseItem
 import com.baraka.androidtask.data.remote.Resource
 import com.baraka.androidtask.databinding.FirstFragmentBinding
 import com.baraka.androidtask.ui.firstfragment.adapter.HorizontalStockTickerRecyclerAdapter
+import com.baraka.androidtask.ui.firstfragment.adapter.NewsAdapter
+import com.baraka.androidtask.ui.firstfragment.adapter.NewsFeedHorizontalAdapter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.first_fragment.*
@@ -32,8 +35,15 @@ class FirstFragment : BaseFragment<FirstFragmentBinding, FirstViewModel>() {
     override val bindingVariable: Int
         get() = BR.viewModel
 
-    private lateinit var adapter: HorizontalStockTickerRecyclerAdapter
+    private lateinit var stockTickerAdapter: HorizontalStockTickerRecyclerAdapter
     private var stocksList: ArrayList<StocksResponseItem> = ArrayList()
+
+    private lateinit var newsFeedHorizontalAdaper : NewsFeedHorizontalAdapter
+    private lateinit var newsAdapter: NewsAdapter
+
+    private var newsFeedList: ArrayList<Article> = ArrayList()
+
+    private var horizontalNewsFeedList : ArrayList<Article> = ArrayList()
     lateinit var dataStoreProvider: DataStoreProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,11 +52,11 @@ class FirstFragment : BaseFragment<FirstFragmentBinding, FirstViewModel>() {
         //Get reference to our Data Store Provider class
         dataStoreProvider = DataStoreProvider(requireContext())
 
-
         subscribeToObserveDataStore()
 
         //calling api
         mViewModel.getStocksFromURL()
+        mViewModel.getNewsFromURL()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,36 +68,14 @@ class FirstFragment : BaseFragment<FirstFragmentBinding, FirstViewModel>() {
     override fun subscribeToViewLiveData() {
         super.subscribeToViewLiveData()
 
-//        mViewModel.btnClick.observe(this, Observer {
-//
-//            //observing data from edittext
-//            mViewModel.myedittext.get()?.let {
-//
-//                //setting data to textview
-//                mViewModel.myName.set(it)
-//
-//                //saving data to data store
-//                //Stores the values
-//                GlobalScope.launch {
-//                    dataStoreProvider.storeData(false, it)
-//                }
-//            }
-//        })
     }
 
     private fun subscribeToObserveDataStore() {
 
-        //observing data from data store and showing
-//        dataStoreProvider.userNameFlow.asLiveData().observe(this, Observer {
-//            mViewModel.myName.set(it)
-//        })
-
     }
 
-
     private fun initialising() {
-
-        adapter = HorizontalStockTickerRecyclerAdapter(stocksList, object : HorizontalStockTickerRecyclerAdapter.ClickItemListener {
+        stockTickerAdapter = HorizontalStockTickerRecyclerAdapter(stocksList, requireContext(), object : HorizontalStockTickerRecyclerAdapter.ClickItemListener {
             override fun onClicked(position: Int) {
 //                Navigation.findNavController(recycler_posts)
 //                    .navigate(R.id.action_firstFragment_to_secondFragment)
@@ -126,7 +114,42 @@ class FirstFragment : BaseFragment<FirstFragmentBinding, FirstViewModel>() {
          autoScrollAnother()
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         recycler_horizontal_ticker.layoutManager = layoutManager
-        recycler_horizontal_ticker.adapter = adapter
+        recycler_horizontal_ticker.adapter = stockTickerAdapter
+
+
+        newsFeedHorizontalAdaper = NewsFeedHorizontalAdapter(horizontalNewsFeedList, object : NewsFeedHorizontalAdapter.ClickItemListener {
+            override fun onClicked(position: Int) {
+//                Navigation.findNavController(recycler_posts)
+//                    .navigate(R.id.action_firstFragment_to_secondFragment)
+            }
+
+            override fun onProductLiked(position: Int, isLiked: Boolean) {
+            }
+
+        })
+
+        val newsFeedHorizontalLayoutManager = LinearLayoutManager(requireContext())
+        newsFeedHorizontalLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        recycler_horizontal_news.layoutManager = newsFeedHorizontalLayoutManager
+        recycler_horizontal_news.adapter = newsFeedHorizontalAdaper
+
+        newsAdapter = NewsAdapter(newsFeedList, object : NewsAdapter.ClickItemListener {
+            override fun onClicked(position: Int) {
+//                Navigation.findNavController(recycler_posts)
+//                    .navigate(R.id.action_firstFragment_to_secondFragment)
+            }
+
+            override fun onProductLiked(position: Int, isLiked: Boolean) {
+            }
+
+        })
+
+        val newsLinearLayoutManager = LinearLayoutManager(requireContext())
+        newsLinearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        recycler_vertical_news.layoutManager = newsLinearLayoutManager
+        recycler_vertical_news.adapter = newsAdapter
+
+
 
     }
 
@@ -136,10 +159,6 @@ class FirstFragment : BaseFragment<FirstFragmentBinding, FirstViewModel>() {
         val runnable: Runnable = object : Runnable {
             override fun run() {
                 recycler_horizontal_ticker.smoothScrollToPosition(scrollCount++)
-//                if (scrollCount == stocksList.size - 4) {
-//                    stocksList.addAll(stockListModels)
-//                    adapter.notifyDataSetChanged()
-//                }
                 handler.postDelayed(this, 2000)
             }
         }
@@ -157,7 +176,7 @@ class FirstFragment : BaseFragment<FirstFragmentBinding, FirstViewModel>() {
                     it.data?.let {
                         stocksList.addAll(it)
                         Log.d("stocks",it.toString())
-                        adapter.notifyDataSetChanged()
+                        stockTickerAdapter.notifyDataSetChanged()
                     }
 
                 }
@@ -173,6 +192,38 @@ class FirstFragment : BaseFragment<FirstFragmentBinding, FirstViewModel>() {
                 }
             }
         })
+
+        mViewModel.newsFeed.observe(this) {
+            when(it.status){
+                Resource.Status.SUCCESS -> {
+                    hideProgressBar()
+                    it.data?.let{newsFeedResponse ->
+                        newsFeedResponse.articles.let { articles ->
+                            for (index in articles.indices) {
+                                if (index < 6)
+                                    horizontalNewsFeedList.add(articles[index])
+                                else {
+                                    newsFeedList.add(articles[index])
+                                }
+                            }
+                            newsFeedHorizontalAdaper.notifyDataSetChanged()
+                            newsAdapter.notifyDataSetChanged()
+                            Log.d("articles", articles.toString())
+                        }
+                    }
+                }
+                Resource.Status.LOADING -> {
+                    showProgressBar()
+                }
+                Resource.Status.ERROR -> {
+                    hideProgressBar()
+
+                    Snackbar.make(recycler_horizontal_ticker!!, it.message!!, Snackbar.LENGTH_SHORT)
+                        .show()
+
+                }
+            }
+        }
     }
 
 

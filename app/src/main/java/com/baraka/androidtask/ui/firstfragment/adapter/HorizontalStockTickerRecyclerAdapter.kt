@@ -1,19 +1,21 @@
 package com.baraka.androidtask.ui.firstfragment.adapter
 
+import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.baraka.androidtask.R
 import com.baraka.androidtask.data.models.stocktickers.StocksResponseItem
+import com.baraka.androidtask.utils.roundOfStocksValue
 
 
 class HorizontalStockTickerRecyclerAdapter(
     private val list: List<StocksResponseItem>,
+    private val context : Context,
     private val listener: ClickItemListener
+
 ) :
     RecyclerView.Adapter<HorizontalStockTickerRecyclerAdapter.PostsViewHolder>() {
 
@@ -29,7 +31,7 @@ class HorizontalStockTickerRecyclerAdapter(
 
     override fun onBindViewHolder(holder: PostsViewHolder, position: Int) {
         val postsResponseItem: StocksResponseItem = list[position]
-        holder.bind(postsResponseItem)
+        holder.bind(postsResponseItem,context)
 
 
 //        holder.linearlayout!!.setOnClickListener { listener.onClicked(position) }
@@ -52,13 +54,29 @@ class HorizontalStockTickerRecyclerAdapter(
 
         }
 
-        fun bind(stocks: StocksResponseItem) {
+        fun bind(stocks: StocksResponseItem, context: Context) {
+            var previousValue = 0.00
             stocks.StockItem[0].let {
-                 var title = it.replace("\"", "")
-                tvStockTitle?.text = title
+                if (it.isNotEmpty()) {
+                    var title = it.replace("\"", "")
+                    tvStockTitle?.text = title
+                } else
+                    tvStockTitle?.text = ""
             }
 
-            tvStockValue?.text = stocks.StockItem[1]
+            stocks.StockItem[1].let {
+
+                if (it.isNotEmpty()) {
+                    previousValue = tvStockValue?.text.toString().toDouble()
+                    if (previousValue < roundOfStocksValue(it).toDouble()) {
+                        tvStockValue?.setTextColor(Color.parseColor("#0DDD00"))
+                    }else {
+                        tvStockValue?.setTextColor(Color.parseColor("#AAAAAA"))
+                    }
+                    tvStockValue?.text = roundOfStocksValue(it)
+                }else
+                    tvStockValue?.text = ""
+            }
         }
 
     }

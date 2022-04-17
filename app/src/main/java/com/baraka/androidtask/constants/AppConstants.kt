@@ -9,7 +9,7 @@ object AppConstants {
     annotation class ApiConfiguration {
         companion object {
             const val NEWS_FEED = "https://saurav.tech/NewsAPI/everything/"
-            const val STOCK_TICKERS = "https://raw.githubusercontent.com/dsancov/TestData/main/"
+            const val STOCK_TICKERS = "https://raw.githubusercontent.com/dsancov/TestData/main/stocks.csv"
         }
     }
 

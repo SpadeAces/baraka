@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Baraka</string>
     <string name="tesla">Tesla</string>
+    <string name="akhbaraka">Akhbaraka</string>
+    <string name="trending_financial_news">Trending financial news</string>
+    <string name="insights">Insights</string>
+    <string name="news">News</string>
 </resources>

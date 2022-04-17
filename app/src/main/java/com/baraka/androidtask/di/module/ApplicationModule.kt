@@ -5,10 +5,8 @@ import com.baraka.androidtask.BuildConfig
 import com.baraka.androidtask.constants.AppConstants
 import com.baraka.androidtask.data.local.db.AppDao
 import com.baraka.androidtask.data.local.db.AppDatabase
-import com.baraka.androidtask.data.remote.newsfeed.NewsFeedApiService
-import com.baraka.androidtask.data.remote.stocks.ApiService
+import com.baraka.androidtask.data.remote.ApiService
 import com.baraka.androidtask.data.remote.reporitory.MainRepository
-import com.baraka.androidtask.data.remote.reporitory.NewsFeedRepository
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -20,7 +18,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -39,12 +36,10 @@ class ApplicationModule {
         .Builder()
         .build()
 
-    /**------------------------------------------------------------------------------Stocks Module----------------------------------------------------------------------------------------------------------------**/
-
     @Singleton
     @Provides
     fun provideRetrofit(gson: Gson,okHttpClient: OkHttpClient) : Retrofit = Retrofit.Builder()
-        .baseUrl(AppConstants.ApiConfiguration.STOCK_TICKERS)
+        .baseUrl(AppConstants.ApiConfiguration.NEWS_FEED)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(okHttpClient)
         .build()
@@ -69,32 +64,5 @@ class ApplicationModule {
                           localDataSource: AppDao
     ) =
         MainRepository(apiService, localDataSource)
-
-    /**------------------------------------------------------------------------------News Feed Module----------------------------------------------------------------------------------------------------------------**/
-
-
-    @Singleton
-    @Provides
-    @Named("NewsFeed")
-    fun provideRetrofitNewsFeed(gson: Gson, okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-            .baseUrl(AppConstants.ApiConfiguration.NEWS_FEED)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(okHttpClient)
-            .build()
-
-
-    @Provides
-    fun provideApiServiceNewsFeed(@Named("NewsFeed") retrofit: Retrofit): NewsFeedApiService =
-        retrofit.create(
-            NewsFeedApiService::class.java
-        )
-
-    @Singleton
-    @Provides
-    fun provideNewsFeedRepository(
-        apiService: NewsFeedApiService,
-        localDataSource: AppDao
-    ) =
-        NewsFeedRepository(apiService, localDataSource)
 
 }

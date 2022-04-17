@@ -1,9 +1,10 @@
 package com.baraka.androidtask.data.remote.reporitory
 
 import android.util.Log
+import com.baraka.androidtask.constants.AppConstants
 import com.baraka.androidtask.data.local.db.AppDao
 import com.baraka.androidtask.data.models.stocktickers.StocksResponseItem
-import com.baraka.androidtask.data.remote.stocks.ApiService
+import com.baraka.androidtask.data.remote.ApiService
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL
@@ -17,7 +18,7 @@ class MainRepository @Inject constructor(
 
 
     suspend fun getStocks() : List<StocksResponseItem>{
-        val url = URL("https://raw.githubusercontent.com/dsancov/TestData/main/stocks.csv")
+        val url = URL(AppConstants.ApiConfiguration.STOCK_TICKERS)
         val reader = BufferedReader(InputStreamReader(url.openStream()))
 
         var info = reader.readLine()
@@ -37,5 +38,7 @@ class MainRepository @Inject constructor(
         return stocksList
 
     }
+
+    suspend fun getNewsFeed() = apiService.getNewsFeed()
 
 }
