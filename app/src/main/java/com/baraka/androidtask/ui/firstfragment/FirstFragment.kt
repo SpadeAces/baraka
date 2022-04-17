@@ -160,10 +160,10 @@ class FirstFragment : BaseFragment<FirstFragmentBinding, FirstViewModel>() {
         val runnable: Runnable = object : Runnable {
             override fun run() {
                 recycler_horizontal_ticker.smoothScrollToPosition(scrollCount++)
-                handler.postDelayed(this, 2000)
+                handler.postDelayed(this, 1000)
             }
         }
-        handler.postDelayed(runnable, 2000)
+        handler.postDelayed(runnable, 1000)
     }
 
     //subscribing to network live data
