@@ -144,6 +144,9 @@ dependencies {
 
     //sdpi lib
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
+
+    //to read csv
+    implementation "com.opencsv:opencsv:4.1"
 }
 protobuf {
     protoc {

@@ -5,10 +5,11 @@ import androidx.annotation.StringDef
 
 object AppConstants {
 
-    @StringDef(ApiConfiguration.BASE_URL)
+    @StringDef(ApiConfiguration.NEWS_FEED, ApiConfiguration.STOCK_TICKERS)
     annotation class ApiConfiguration {
         companion object {
-            const val BASE_URL = "https://jsonplaceholder.typicode.com/"
+            const val NEWS_FEED = "https://saurav.tech/NewsAPI/everything/"
+            const val STOCK_TICKERS = "https://raw.githubusercontent.com/dsancov/TestData/main/"
         }
     }
 
