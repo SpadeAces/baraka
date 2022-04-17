@@ -14,6 +14,7 @@ import com.baraka.androidtask.R
 import com.baraka.androidtask.baseclasses.BaseFragment
 import com.baraka.androidtask.data.local.datastore.DataStoreProvider
 import com.baraka.androidtask.data.models.newsfeed.Article
+import com.baraka.androidtask.data.models.stocktickers.Stocks
 import com.baraka.androidtask.data.models.stocktickers.StocksResponseItem
 import com.baraka.androidtask.data.remote.Resource
 import com.baraka.androidtask.databinding.FirstFragmentBinding
@@ -36,7 +37,7 @@ class FirstFragment : BaseFragment<FirstFragmentBinding, FirstViewModel>() {
         get() = BR.viewModel
 
     private lateinit var stockTickerAdapter: HorizontalStockTickerRecyclerAdapter
-    private var stocksList: ArrayList<StocksResponseItem> = ArrayList()
+    private var stocksList: ArrayList<Stocks> = ArrayList()
 
     private lateinit var newsFeedHorizontalAdaper : NewsFeedHorizontalAdapter
     private lateinit var newsAdapter: NewsAdapter

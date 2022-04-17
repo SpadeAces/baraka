@@ -9,13 +9,12 @@ import java.text.DecimalFormat
  * Created by manzo on 17,April,2022
  */
 
-fun roundOfStocksValue(stockValue: String?): String {
-    return if (stockValue.isNullOrEmpty()) {
-        "0.00"
+fun roundOfStocksValue(stockValue: Double): Double {
+    return if (stockValue.equals(0.00)) {
+        stockValue
     } else {
-        val tempValue: Double = (stockValue.toDouble())
         val df = DecimalFormat("#.##")
         df.roundingMode = RoundingMode.CEILING
-        df.format(tempValue).toString()
+        df.format(stockValue).toDouble()
     }
 }

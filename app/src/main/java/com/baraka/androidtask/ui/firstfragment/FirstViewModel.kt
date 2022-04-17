@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.baraka.androidtask.baseclasses.BaseViewModel
 import com.baraka.androidtask.data.models.newsfeed.NewsFeedResponse
+import com.baraka.androidtask.data.models.stocktickers.Stocks
 import com.baraka.androidtask.data.models.stocktickers.StocksResponseItem
 import com.baraka.androidtask.data.remote.Resource
 import com.baraka.androidtask.data.remote.reporitory.MainRepository
@@ -20,8 +21,8 @@ class FirstViewModel @Inject constructor(
     private val networkHelper: NetworkHelper
 ) : BaseViewModel() {
 
-    private val _stocks = MutableLiveData<Resource<List<StocksResponseItem>>>()
-    val stocksData: LiveData<Resource<List<StocksResponseItem>>>
+    private val _stocks = MutableLiveData<Resource<List<Stocks>>>()
+    val stocksData: LiveData<Resource<List<Stocks>>>
         get() = _stocks
 
     fun getStocksFromURL(){

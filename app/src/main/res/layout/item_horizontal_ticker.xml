@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:id="@+id/constraint_stock_layout"
     android:layout_marginStart="@dimen/_8sdp"
-    android:background="@drawable/price_change_down_bg">
+    >
 
     <TextView
         android:id="@+id/tv_stock_title"
@@ -22,15 +23,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/iv_stock_indicator"
         android:layout_width="@dimen/_12sdp"
         android:layout_height="@dimen/_12sdp"
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_6sdp"
-        android:src="@drawable/down"
         app:layout_constraintStart_toEndOf="@+id/tv_stock_title"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/colorPriceChangeDown" />
+        />
 
     <TextView
         android:id="@+id/tv_stock_value"
@@ -42,7 +42,7 @@
         android:text="2.23"
         android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/iv_stock_indicator"
         app:layout_constraintTop_toTopOf="@+id/tv_stock_title" />
 
 
